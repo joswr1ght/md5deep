@@ -9,7 +9,7 @@ import os, sys, hashlib
 # Optimized for low-memory systems, read whole file with blocksize=0
 def md5sum(filename, blocksize=65536):
     hash = hashlib.md5()
-    with open(filename, "r+b") as f:
+    with open(filename, "rb") as f:
         for block in iter(lambda: f.read(blocksize), ""):
             hash.update(block)
     return hash.hexdigest()
