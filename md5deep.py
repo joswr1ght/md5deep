@@ -19,6 +19,7 @@ def usage():
     print "-r        - recursive mode, all subdirectories are traversed."
     print "-X <file> - enables negative matching mode."
     print "-f        - speed up hash calculations, using more memory."
+    print "-0        - Uses a NULL character (/0) to terminate each line instead of a newline. Useful for processing filenames with strange characters."
 
 def validate_hashes(hashfile, hashlist):
     # Open file and build a new hashlist
@@ -58,6 +59,7 @@ if __name__ == '__main__':
     opt_recursive = None
     opt_negmatch = None
     opt_fast = None
+    opt_null = None
     opt_files = []
 
     if len(sys.argv) == 1:
@@ -69,6 +71,9 @@ if __name__ == '__main__':
     for i in it:
         if i == '-r':
             opt_recursive = True
+            continue
+        elif i == '-0':
+            opt_null = True
             continue
         elif i == '-f':
             opt_fast = True
@@ -110,4 +115,7 @@ if __name__ == '__main__':
     else:
         # Just print out the list with Windows-syle filenames
         for hash in hashlist:
-            print "%s  %s"%(hash[1],winfname(hash[0]))
+           if opt_null:
+              print "%s  %s\0"%(hash[1],winfname(hash[0]))
+           else:
+              print "%s  %s"%(hash[1],winfname(hash[0]))
